@@ -43,7 +43,7 @@ Functions which aid with the calibration of the images
 - calc_IF: Calculates an I/F factor for a non byte-scaled image, defaults
              based on Hubble WFC3/UVIS instrument
                 r : distance between sun and planet (km)
-         PHOTFLAM : Flux density of star that produces value of 1 count/sec
+         PHOTFLAM : Inverse sensitivity of the instrument erg/cm^-2/ang/electron
         SolarFlux : Flux density of the sun in that wavelength at Earth
         PlateScale: Plate Scale of the detector (arcsec)
 
@@ -53,18 +53,37 @@ def AU_to_km(n):
     Dist = n*149598000
     return Dist
 
-def calc_IF(r, PHOTFLAM, SolarFlux, PlateScale = 0.04):
+def calc_IF(r, PHOTFLAM, SolarFlux, PlateScale = 0.04, Filter = None):
     # Shielding from arrays of length 1
     dist = float(r)
     PHOTFLAM = float(PHOTFLAM)
     SolFlux = float(SolarFlux)
     PlateScale = float(PlateScale)
     
-    #determining I/F Factor
-    omega = ((PlateScale/3600)*(np.pi/180))**2
-    fractop = ((PHOTFLAM*10)/omega)
-    fracbottom = ((AU_to_km(1.0)/AU_to_km(dist))**2)*(SolFlux/np.pi)
-    IF = fractop/fracbottom
+    if Filter == '467':
+        #determining I/F Factor
+        omega =((0.0495/3600)*(np.pi/180))**2 #3.76E-14
+        fractop = ((PHOTFLAM*10)/omega)
+        fracbottom = ((AU_to_km(1.0)/AU_to_km(dist))**2)*(SolFlux/np.pi)
+        IF = fractop/fracbottom#PHOTFLAM*(10/omega)*(np.pi/SolFlux)*(dist**2)
+    elif Filter == '547':
+        #determining I/F Factor
+        omega =((0.049/3600)*(np.pi/180))**2 #3.76E-14
+        fractop = ((PHOTFLAM*10)/omega)
+        fracbottom = ((AU_to_km(1.0)/AU_to_km(dist))**2)*(SolFlux/np.pi)
+        IF = fractop/fracbottom#PHOTFLAM*(10/omega)*(np.pi/SolFlux)*(dist**2)
+    elif Filter == '619':
+        #determining I/F Factor
+        omega =((0.0497/3600)*(np.pi/180))**2 #3.76E-14
+        fractop = ((PHOTFLAM*10)/omega)
+        fracbottom = ((AU_to_km(1.0)/AU_to_km(dist))**2)*(SolFlux/np.pi)
+        IF = fractop/fracbottom#PHOTFLAM*(10/omega)*(np.pi/SolFlux)*(dist**2)
+    else:
+        #determining I/F Factor
+        omega =((PlateScale/3600)*(np.pi/180))**2 #3.76E-14
+        fractop = ((PHOTFLAM*10)/omega)
+        fracbottom = ((AU_to_km(1.0)/AU_to_km(dist))**2)*(SolFlux/np.pi)
+        IF = fractop/fracbottom#PHOTFLAM*(10/omega)*(np.pi/SolFlux)*(dist**2)
     return IF, PlateScale
 
 def minnaert(img, cent, k, eph, ex_ang=70):
