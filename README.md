@@ -22,6 +22,7 @@ mean albedo across the entire planetary disk remained consistent before and
 after the WFPC2-WFC3 transition." 
 This correction can be seen in MapFunc.py
 
-The list of images which were used to make this data can be found in the excel spreadsheet. 
+The list of images which were used to make this data can be found in the excel spreadsheet, pick the relevant filter name/number from that year to see the image. 
+in the years 2015-2020, methane filter is F763M, in year 2011, methane filter is F845M, in 2009-2010 the methane filter is FQ727N, in 2000-2008 the methane filter is the 619nm band, FQCH4N15 filter from WFPC2. 
 
 The notebook also prints the expected position of the planicentre, however it can be seen that this might be a little inaccurate, it is probably best to apply your own algorithms to that.
